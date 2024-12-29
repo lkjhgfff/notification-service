@@ -1,0 +1,4 @@
+pika
+smtplib
+logging
+prometheus_flask_exporter

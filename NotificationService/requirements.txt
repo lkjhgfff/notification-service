@@ -1,0 +1,4 @@
+Flask
+pika
+logging
+prometheus_flask_exporter
