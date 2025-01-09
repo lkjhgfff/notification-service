@@ -6,7 +6,6 @@ from prometheus_flask_exporter import PrometheusMetrics
 
 # Настройка логирования
 logging.basicConfig(
-    filename='log/notification_service.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
@@ -28,11 +27,11 @@ def send_notification():
 
     try:
         channel.basic_publish(exchange='', routing_key='notification_queue', body=message)
-        logging.info(f'Sent message to queue: {message}')
+        logging.info(f'Сообщение отправлено в очередь: {message}')
         return 'Notification sent', 200
     except Exception as e:
-        logging.error(f'Failed to send message: {e}')
-        return 'Failed to send notification', 500
+        logging.error(f'Не удалось отправить сообщение: {e}')
+        return 'Не удалось отправить сообщение', 500
     finally:
         connection.close()
 
