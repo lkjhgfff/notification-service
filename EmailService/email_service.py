@@ -37,7 +37,7 @@ def start_email_service():
     channel = connection.channel()
     channel.queue_declare(queue='notification_queue', durable=True)
     channel.basic_consume(queue='notification_queue', on_message_callback=callback)
-    logging.info('Email Service started and waiting for messages...')
+    logging.info('Email Сервис запущен')
     channel.start_consuming()
 
 if __name__ == '__main__':
