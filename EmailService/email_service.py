@@ -3,19 +3,14 @@ import json
 import logging
 import smtplib
 from email.mime.text import MIMEText
-from prometheus_flask_exporter import PrometheusMetrics
 from flask import Flask
 
-# Настройка логирования
+app = Flask(__name__)
+
 logging.basicConfig(
-    filename='log/email_service.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
-
-app = Flask(__name__)
-metrics = PrometheusMetrics(app)
-
 def send_email(to_email, content):
     msg = MIMEText(content)
     msg['Subject'] = 'Notification'
@@ -27,9 +22,9 @@ def send_email(to_email, content):
             server.starttls()
             server.login('your_email@example.com', 'your_password')
             server.sendmail(msg['From'], [msg['To']], msg.as_string())
-        logging.info(f'Email sent to {to_email}')
+        logging.info(f'Сообщение отправлено в очередь {to_email}')
     except Exception as e:
-        logging.error(f'Error sending email: {e}')
+        logging.error(f'Не удалось отправить сообщение: {e}')
 
 def callback(ch, method, properties, body):
     data = json.loads(body)
@@ -38,7 +33,7 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 def start_email_service():
-    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
     channel = connection.channel()
     channel.queue_declare(queue='notification_queue', durable=True)
     channel.basic_consume(queue='notification_queue', on_message_callback=callback)
