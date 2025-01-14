@@ -14,14 +14,14 @@ logging.basicConfig(
 def send_email(to_email, content):
     msg = MIMEText(content)
     msg['Subject'] = 'Notification'
-    msg['From'] = 'your_email@example.com'
+    msg['From'] = 'email@gmail.com'
     msg['To'] = to_email
 
     try:
-        with smtplib.SMTP('smtp.example.com', 587) as server:
-            server.starttls()
-            server.login('your_email@example.com', 'your_password')
-            server.sendmail(msg['From'], [msg['To']], msg.as_string())
+        smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
+        smtpObj.starttls()
+        smtpObj.login('email@gmail.com', 'password')
+        smtpObj.sendmail(msg['From'], [msg['To']], msg.as_string())
         logging.info(f'Сообщение отправлено в очередь {to_email}')
     except Exception as e:
         logging.error(f'Не удалось отправить сообщение: {e}')
