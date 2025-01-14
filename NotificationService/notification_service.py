@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 # Мониторинг
 notification_counter = Counter('notifications_total', 'Количество уведомлений')
-notification_time = Histogram('notification_processing_seconds', 'Время обработки уведомлений')
+notification_time = Histogram('notification_time_seconds', 'Время обработки уведомлений')
 notification_failures = Counter('notification_failures_total', 'Количество неудачных уведомлений')
 
 logging.basicConfig(
